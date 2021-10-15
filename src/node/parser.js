@@ -1,32 +1,27 @@
 const fs = require('fs')
+const fsPromises = require('fs/promises')
 const readline = require('readline')
 const path = require('path')
 
 const targetFilePath = path.join(__dirname, '..', '..', 'data', 'data-target.csv')
 const sourceFilePath = path.join(__dirname, '..', '..', 'data', 'data-source.csv')
 
-/**
- * @param {number} index
- */
-function main (index) {
-  console.time(`test #${index}`)
-  fs.truncateSync(targetFilePath)
+async function main () {
+  console.time('test')
+  await fsPromises.truncate(targetFilePath)
   const readStream = fs.createReadStream(sourceFilePath)
+  const writeStream = fs.createWriteStream(targetFilePath)
   const rl = readline.createInterface({
     input:     readStream,
     crlfDelay: Infinity
   })
-  rl.on('line', line => fs.appendFileSync(targetFilePath, `${line}\n`))
-  rl.on('close', () => {
-      console.timeEnd(`test #${index}`)
-    }
-  )
+
+  for await (const line of rl) {
+    writeStream.write(`${line}\n`)
+  }
+  console.timeEnd('test')
 }
 
-main(10)
-// ;(async () => {
-//   const iterableArr = new Array(10).fill(0)
-//   iterableArr.map(async (e, i) => {
-//     await main(i)
-//   })
-// })()
+;(async () => {
+  await main()
+})()
