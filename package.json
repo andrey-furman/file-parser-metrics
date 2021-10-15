@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/jest --verbose",
+    "test:watch": "yarn test -- --watch"
+  },
   "dependencies": {
-    "faker": "^5.5.3"
+    "faker": "^5.5.3",
+    "jest": "^27.2.5"
   }
 }

@@ -3,14 +3,20 @@ const fsPromises = require('fs/promises')
 const readline = require('readline')
 const path = require('path')
 
-const targetFilePath = path.join(__dirname, '..', '..', 'data', 'data-target.csv')
-const sourceFilePath = path.join(__dirname, '..', '..', 'data', 'data-source.csv')
+/**
+ *
+ * @param {string} sourceFilePath
+ * @param {string} targetFilePath
+ * @returns {Promise<void>}
+ */
+async function main (sourceFilePath, targetFilePath) {
+  const targetPath = targetFilePath || path.join(__dirname, '..', '..', 'data', 'data-target.csv')
+  const sourcePath = sourceFilePath || path.join(__dirname, '..', '..', 'data', 'data-source.csv')
 
-async function main () {
   console.time('test')
-  await fsPromises.truncate(targetFilePath)
-  const readStream = fs.createReadStream(sourceFilePath)
-  const writeStream = fs.createWriteStream(targetFilePath)
+  await fsPromises.truncate(targetPath)
+  const readStream = fs.createReadStream(sourcePath)
+  const writeStream = fs.createWriteStream(targetPath)
   const rl = readline.createInterface({
     input:     readStream,
     crlfDelay: Infinity
@@ -22,6 +28,6 @@ async function main () {
   console.timeEnd('test')
 }
 
-;(async () => {
-  await main()
-})()
+module.exports = {
+  main
+}
