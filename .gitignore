@@ -1,4 +1,6 @@
-data/
-node_modules/
-env/
-tmp/
+data/*
+node_modules/*
+env/*
+tmp/*
+
+.air.toml
