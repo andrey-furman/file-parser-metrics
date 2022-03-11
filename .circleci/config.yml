@@ -7,9 +7,9 @@ executors:
 
 jobs:
   check_py:
-  executor: node
-  steps:
-    - run: python3 --version
+    executor: node
+    steps:
+      - run: python3 --version
 
 workflows:
   initial:
